@@ -30,7 +30,7 @@ def torch_sgd_linear(dots: torch.tensor, batch_size, start=None, lr=1e-6, epoch_
     elif method == 'Adam':
         optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     else:
-        raise RuntimeError("Unsupported operation")
+        raise RuntimeError("Unsupported method")
 
     converged = False
     way = [start]
