@@ -123,7 +123,7 @@ def runTestBFGS():
 
 def main():
     runTestGaussNewtonLeg()
-    # runTestBFGS()
+    runTestBFGS()
 
 
 if __name__ == "__main__":
