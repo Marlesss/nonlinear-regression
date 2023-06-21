@@ -2,19 +2,23 @@ from typing import Callable
 
 import numpy as np
 import math
+import random
 
-EPS = 0.001
+EPS = 1e-5
+
+
+def vectorize(func):
+    def wrapped(args: np.ndarray):
+        return func(*args)
+
+    return wrapped
+
+
+def generate_dots_on_line(n: int, line: Callable[[float], float], noize: float = 0, x_from=0, x_to=100) -> np.ndarray:
+    return np.array([(x, line(x) + (random.random() - 1 / 2) * noize) for x in np.linspace(x_from, x_to, n)])
 
 
 def r(g: Callable[[float], float], g_difs: [Callable[[float], float]]):
-    # def apply(x: float, y: float):
-    #     return (y - g(x)) ** 2
-    #
-    # def dif(g_dif: Callable[[float], float]):
-    #     def apply_dif(x: float, y: float):
-    #         return 2 * (y - g(x)) * (-g_dif(x))
-    #
-    #     return apply_dif
     def apply(x: float, y: float):
         return y - g(x)
 
@@ -41,7 +45,12 @@ def f(dots: [(float, float)], g_factory):
     return apply
 
 
+grad_f_apply_count = 0
+
+
 def grad_f(jacobian: np.ndarray, r_vector: np.ndarray):
+    global grad_f_apply_count
+    grad_f_apply_count += 1
     return np.dot(jacobian.T, r_vector)
 
 
@@ -60,10 +69,15 @@ def grad_square_f(jacobian: np.ndarray):
     return np.dot(jacobian.T, jacobian)
 
 
+g_exponent_apply_count = 0
+
+
 def g_exponent(a: float, b: float):
     # a * e^(b * x)
 
     def apply(x: float):
+        global g_exponent_apply_count
+        g_exponent_apply_count += 1
         return a * math.e ** (b * x)
 
     def dif_a(x: float):

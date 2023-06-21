@@ -1,5 +1,3 @@
-import numpy as np
-
 from nonlinear_regression import *
 from plot import *
 

@@ -1,8 +1,7 @@
 import numpy as np
 import torch
-from random import shuffle
 
-EPS = 1e-2
+EPS = 1e-3
 
 
 def torch_sgd_linear(dots: torch.tensor, batch_size, start=None, lr=1e-6, epoch_limit=100, method="SGD", log=False,
@@ -34,7 +33,6 @@ def torch_sgd_linear(dots: torch.tensor, batch_size, start=None, lr=1e-6, epoch_
 
     converged = False
     way = [start]
-
     for epoch in range(epoch_limit):
         if converged:
             break
@@ -51,13 +49,13 @@ def torch_sgd_linear(dots: torch.tensor, batch_size, start=None, lr=1e-6, epoch_
 
             optimizer.zero_grad()
             loss.backward()
-            if all(abs(param.grad.item()) < EPS for param in model.parameters()):
+            if all(abs(param.grad.item()) * lr < EPS for param in model.parameters()):
                 converged = True
                 break
             optimizer.step()
             ans_a, ans_b = model.weight.item(), model.bias.item()
             way.append((ans_a, ans_b))
-            if log and i % 10 == 0:
+            if log and i % 5 == 0:
                 loss, current = loss.item(), (i + 1) * len(x_batch)
                 print(f"loss: {loss:>7f}  [{current:>5d}/{n:>5d}]")
     return converged, np.array(way)

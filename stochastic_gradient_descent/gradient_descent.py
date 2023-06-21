@@ -4,8 +4,8 @@ from typing import Callable
 import stochastic_gradient_descent.func_utils as func_utils
 import math
 
-CONVERGENCE_EPS = 1e-2
-EPS = 10 ** -8
+CONVERGENCE_EPS = 1e-3
+EPS = 1e-3
 
 
 def default_new_args(prev_args: np.ndarray, learning_rate: float, grad: np.ndarray) -> np.ndarray:
@@ -40,6 +40,7 @@ def stochastic_factory(batch_size: int, init_learning_rate: float,
                        epoch_limit: int = 50,
                        log: int = 0):
     def apply(dots: np.ndarray, start_value: np.ndarray) -> (bool, np.ndarray):
+        start_value = np.array(start_value)
         k = len(dots)
         n = len(start_value)
         dots_i = list(range(k))
@@ -62,7 +63,7 @@ def stochastic_factory(batch_size: int, init_learning_rate: float,
                 for dot in minibatch_dots:
                     grad += grad_func(dot[0], dot[1])
 
-                if (abs(grad) < CONVERGENCE_EPS).all():
+                if (abs(grad) * learning_rate < CONVERGENCE_EPS).all():
                     converged = True
                     break
 
