@@ -12,7 +12,8 @@ from bfgs.nonlinear_regression import BFGS, L_BFGS
 from gradient_descent.gradient_descent import gradient_descent_constant, gradient_descent_linear
 import bfgs.funcs
 
-adam_gd = lambda lr: stochastic_factory(10, lr, constant_learning_rate(), grad_func, adam_mod(0.9, 0.999), epoch_limit=50)
+adam_gd = lambda lr: stochastic_factory(10, lr, constant_learning_rate(), grad_func, adam_mod(0.9, 0.999),
+                                        epoch_limit=50)
 
 
 def add_gd_solution_to_plot(ans_func, dots, label, color):
@@ -60,6 +61,7 @@ def testNewtonAndDog(dots, g_2arg, start, adam_lr, polynomial_dim, polynomial_lr
     # t = 10
     # show_2arg_func_slice(lambda args: math_func.mistake(dots, g_2arg(*args)[0]), x_min=-t, x_max=t, y_min=-t, y_max=t, dots_show=False, contour=True)
 
+
 def get_dots(func, shaking, x_from, x_to, cnt):
     return np.array([(i, func(i) + (random() - 1 / 2) * shaking) for i in np.linspace(x_from, x_to, cnt)])
 
@@ -69,7 +71,8 @@ def runTestGaussNewtonLeg():
     testNewtonAndDog(dots, math_func.g_2sin, np.array([2, 1]), adam_lr=0.002, polynomial_dim=6, polynomial_lr=0.00020)
 
     dots = get_dots(math_func.g_exponent(1.5, 2)[0], 3, -2, 1.5, 20)
-    testNewtonAndDog(dots, math_func.g_exponent, np.array([1, 1]), adam_lr=0.005, polynomial_dim=7, polynomial_lr=0.0001)
+    testNewtonAndDog(dots, math_func.g_exponent, np.array([1, 1]), adam_lr=0.005, polynomial_dim=7,
+                     polynomial_lr=0.0001)
 
     dots = get_dots(math_func.g_2parabola(1.4, 4)[0], 2, -2, 2, 20)
     testNewtonAndDog(dots, math_func.g_2parabola, np.array([1, 1]), adam_lr=0.5, polynomial_dim=3, polynomial_lr=0.0005)

@@ -126,16 +126,17 @@ def compare_method(method: str, cnt: int):
 
 
 def main():
-    compare_batch_size(generate_dots_on_line(100, lambda x: 3 * x + 5, noize=30), [1, 10, 25, 50, 75, 100], 'AdaGrad',
-                       epoch_limit=1, lr=2)
-    compare_epoch_limit(generate_dots_on_line(100, lambda x: 3 * x + 5, noize=30), [1, 5, 10, 20, 30, 50], 'SGD',
-                        batch_size=100, lr=1e-7)
-
-    for dots_count, batch_size in [
-        (100, 100),
-        (100, 50)]:
-        print(f"dots: {dots_count}, batch_size: {batch_size}")
-        compare_method("Adam", 10)(dots_count, batch_size, [0, 0], 0.005, 10000)
+    # compare_batch_size(generate_dots_on_line(100, lambda x: 3 * x + 5, noize=30), [1, 10, 25, 50, 75, 100], 'AdaGrad',
+    #                    epoch_limit=1, lr=2)
+    # compare_epoch_limit(generate_dots_on_line(100, lambda x: 3 * x + 5, noize=30), [1, 5, 10, 20, 30, 50], 'SGD',
+    #                     batch_size=100, lr=1e-7)
+    #
+    # for dots_count, batch_size in [
+    #     (100, 100),
+    #     (100, 50)]:
+    #     print(f"dots: {dots_count}, batch_size: {batch_size}")
+    #     compare_method("Adam", 10)(dots_count, batch_size, [0, 0], 0.005, 10000)
+    pass
 
 
 if __name__ == "__main__":

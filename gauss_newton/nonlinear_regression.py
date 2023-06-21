@@ -22,4 +22,4 @@ def gauss_newton(dots: [(float, float)], start: np.ndarray, g_factory, log=False
             break
         new_args = prev + delta
         prev = new_args
-    return prev, iter_count
+    return prev, iter_count, iter_count

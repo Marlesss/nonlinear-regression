@@ -28,7 +28,7 @@ def powell_dog_leg(dots: [(float, float)], start: np.ndarray, g_factory, delta_s
         else:
             # (|| -grad || / || J * -J.T * r || ) ** 2
             # grad = J.T * r
-            # B = J.T * T
+            # B = J.T * J
             # (r.T * J * J.T * r / (r.T * J * J.T * J * J.T * r)) * J.T * r
             pu = (np.linalg.norm(-grad_f_calc) / np.linalg.norm(J.dot(grad_f_calc))) ** 2 * -grad_f_calc
             if np.linalg.norm(pu) > delta:

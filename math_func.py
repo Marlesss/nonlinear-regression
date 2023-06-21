@@ -36,6 +36,11 @@ def jacobi(dots: [(float, float)], g: Callable[[float], float], g_difs: [Callabl
     return [[r_dif(x, y) for r_dif in r_difs] for (x, y) in dots]
 
 
+def hessian(dots: [(float, float)], g: Callable[[float], float], g_difs: [Callable[[float], float]]):
+    J = np.array(jacobi(dots, g, g_difs))
+    return J.T.dot(J)
+
+
 def f(dots: [(float, float)], g_factory):
     def apply(args: [float]):
         g, g_difs = g_factory(*args)
@@ -99,8 +104,13 @@ def g_sin(a: float):
     return apply, [dif_a]
 
 
+g_2sin_apply_count = 0
+
+
 def g_2sin(a: float, b: float):
     def apply(x: float):
+        global g_2sin_apply_count
+        g_2sin_apply_count += 1
         return a * math.sin(b * x)
 
     def dif_a(x: float):
