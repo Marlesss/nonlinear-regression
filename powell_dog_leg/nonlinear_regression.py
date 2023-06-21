@@ -5,9 +5,11 @@ from powell_dog_leg.model import *
 
 def powell_dog_leg(dots: [(float, float)], start: np.ndarray, g_factory, delta_start=20, delta_max=30,
                    etta=1 / 8, log=False):
+    iter_count = 0
     delta = delta_start
     prev = start
     while f(dots, g_factory)(prev) > EPS:
+        iter_count += 1
         g, g_difs = g_factory(*prev)
 
         if log:
@@ -48,4 +50,4 @@ def powell_dog_leg(dots: [(float, float)], start: np.ndarray, g_factory, delta_s
 
         if rho_calc > etta:
             prev = prev + p
-    return prev
+    return prev, iter_count

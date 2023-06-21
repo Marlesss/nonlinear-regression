@@ -70,12 +70,14 @@ def golden_section_method_with_wolfe_conditions(x: np.ndarray, grad: Callable[[n
 
 
 def BFGS(start, func, grad):
+    iter_count = 0
     way = [start]
     grad_step = grad(*start)
     I = np.identity(len(start))
     H = I
     step = start
     while True:
+        iter_count += 1
         p_step = -H.dot(grad_step)
         # alpha = getCorrectAlpha(step, grad_step, p_step, func, grad)
         alpha = golden_section_method_with_wolfe_conditions(step, grad, func, grad(*step))
@@ -92,17 +94,18 @@ def BFGS(start, func, grad):
         way.append(next_step)
         step = next_step
         grad_step = grad_next
-    return np.array(way)
+    return np.array(way), iter_count
 
 
 def L_BFGS(start, func, grad, m=10):
+    iter_count = 0
     way = [start]
     mem = []
     grad_step = grad(*start)
     step = start
     I = np.identity(len(start))
     while True:
-
+        iter_count += 1
         if len(mem) == 0:
             H = I
         else:
@@ -133,4 +136,4 @@ def L_BFGS(start, func, grad, m=10):
         way.append(next_step)
         step = next_step
         grad_step = grad_next
-    return np.array(way)
+    return np.array(way), iter_count

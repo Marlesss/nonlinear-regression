@@ -2,8 +2,10 @@ from math_func import *
 
 
 def gauss_newton(dots: [(float, float)], start: np.ndarray, g_factory, log=False):
+    iter_count = 0
     prev = start
     while f(dots, g_factory)(prev) > EPS:
+        iter_count += 1
         g, g_difs = g_factory(*prev)
 
         if log:
@@ -20,4 +22,4 @@ def gauss_newton(dots: [(float, float)], start: np.ndarray, g_factory, log=False
             break
         new_args = prev + delta
         prev = new_args
-    return prev
+    return prev, iter_count

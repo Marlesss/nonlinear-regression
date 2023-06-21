@@ -17,14 +17,15 @@ def run_with_statistics(stats: [Callable[[], float]], runnable, ans_completion):
     print(f"Work stats is {work_stats}")
 
 
-def show_ans(dots, g_fact, ans: np.ndarray):
+def show_ans(dots, g_fact, ans: np.ndarray, iter_count: int):
     print(f"Solution is {ans}")
+    print(f"Count of iterations is {iter_count}")
     print(f"Mistake of solution is {math_func.mistake(dots, g_fact(*ans)[0])}")
 
 
 def show_scipy_ans(dots, g_fact, ans: scipy.optimize.OptimizeResult):
     print(ans)
-    show_ans(dots, g_fact, ans["x"])
+    show_ans(dots, g_fact, ans["x"], ans["nit"])
 
 
 def main():
@@ -42,22 +43,13 @@ def main():
 
     print("MY GAUSS_NEWTON")
     run_with_statistics(stats, lambda: gauss_newton.nonlinear_regression.gauss_newton(dots, start, g_fact),
-                        lambda ans: show_ans(dots, g_fact, ans))
+                        lambda ans: show_ans(dots, g_fact, ans[0], ans[1]))
     print("________________")
     print("SCIPY NEWTON_CG")
     run_with_statistics(stats,
                         lambda: scipy.optimize.minimize(math_func.f(dots, g_fact), start, method="Newton-CG",
                                                         jac=math_func.vectorize(math_func.grad_f_get(dots, g_fact))),
                         lambda ans: show_scipy_ans(dots, g_fact, ans))
-
-    # my_solution = gauss_newton.nonlinear_regression.gauss_newton(dots, start, g_fact)
-    # print(f"My solution: {my_solution}")
-    # print(f"Mistake of my solution: {mistake(dots, g_fact(*my_solution)[0])}")
-    # scipy_ans = scipy.optimize.minimize(f(dots, g_fact), start, method="Newton-CG",
-    #                                     jac=vectorize(grad_f_get(dots, g_fact)))
-    # scipy_solution = scipy_ans["x"]
-    # print(f"Scipy solution: {scipy_solution}")
-    # print(f"Mistake of scipy solution: {mistake(dots, g_fact(*scipy_solution)[0])}")
 
 
 if __name__ == "__main__":
