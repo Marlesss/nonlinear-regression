@@ -39,3 +39,25 @@ def rosenbrock():
         ])
 
     return func, grad
+
+
+# f(x,y) = (x^2 + y - 11)^2 + (x + y^2 - 7)^2
+himmelblau_func_apply_cnt = 0
+himmelblau_grad_apply_cnt = 0
+
+
+def himmelblau():
+    def func(x: float, y: float):
+        global himmelblau_func_apply_cnt
+        himmelblau_func_apply_cnt += 1
+        return (x ** 2 + y - 11) ** 2 + (x + y ** 2 - 7) ** 2
+
+    def grad(x: float, y: float):
+        global himmelblau_grad_apply_cnt
+        himmelblau_grad_apply_cnt += 1
+        return np.array([
+            4 * x ** 3 + 4 * x * y - 42 * x + 2 * y ** 2 - 14,
+            -26 * y + 2 * x ** 2 - 22 + 4 * y ** 3 + 4 * x * y
+        ])
+
+    return func, grad

@@ -39,21 +39,29 @@ def addStochasticLinear(dots: np.ndarray, g_2arg, start: np.ndarray, adam_lr, po
 
 
 def testNewtonAndDog(dots, g_2arg, start, adam_lr, polynomial_dim, polynomial_lr):
-    addStochasticLinear(dots, g_2arg, start, adam_lr, polynomial_dim, polynomial_lr)
-
-    ans = gauss_newton(dots, start, g_2arg)
-    print(ans)
-    ans_func = g_2arg(*ans)[0]
-    add_gd_solution_to_plot(ans_func, dots, label="Gauss-Newton", color=(1, 0, 0))
-
-    ans = powell_dog_leg(dots, start, g_2arg)
-    ans_func = g_2arg(*ans)[0]
-    add_gd_solution_to_plot(ans_func, dots, label="Powell Dog Leg", color=(1, 1, 0))
-
-    plt.plot(dots[:, 0], dots[:, 1], "o")
-
-    plt.legend(fontsize="xx-small", loc='upper right')
-    plt.show()
+    # addStochasticLinear(dots, g_2arg, start, adam_lr, polynomial_dim, polynomial_lr)
+    #
+    # ans, _, _ = gauss_newton(dots, start, g_2arg)
+    # print(ans)
+    # ans_func = g_2arg(*ans)[0]
+    # add_gd_solution_to_plot(ans_func, dots, label="Gauss-Newton", color=(1, 0, 0))
+    #
+    # ans, _ = powell_dog_leg(dots, start, g_2arg)
+    # ans_func = g_2arg(*ans)[0]
+    # add_gd_solution_to_plot(ans_func, dots, label="Powell Dog Leg", color=(1, 1, 0))
+    #
+    # plt.plot(dots[:, 0], dots[:, 1], "o")
+    #
+    # plt.legend(fontsize="xx-small", loc='upper right')
+    # plt.show()
+    plt.rcParams['figure.figsize'] = [10, 4]
+    plt.subplot(1, 2, 1)
+    show_2arg_func_slice(lambda args: math_func.mistake(dots, g_2arg(*args)[0]), x_min=0, x_max=20, y_min=0, y_max=12,
+                         dots_show=False, contour=True, show=False)
+    plt.subplot(1, 2, 2)
+    show_2arg_func_slice(lambda args: math_func.mistake(dots, g_2arg(*args)[0]), x_min=0, x_max=2, y_min=0, y_max=3, dots_show=False, contour=True)
+    # show_2arg_func_slice(lambda args: math_func.mistake(dots, g_2arg(*args)[0]), x_min=1.3, x_max=1.7, y_min=1.7, y_max=2.3,
+    #                      dots_show=False, contour=True)
 
     # t = 2.5
     # show_2arg_func_slice(lambda args: math_func.mistake(dots, g_2arg(*args)[0]), x_min=-t, x_max=t, y_min=-t, y_max=t, dots_show=False, contour=True)
@@ -67,15 +75,15 @@ def get_dots(func, shaking, x_from, x_to, cnt):
 
 
 def runTestGaussNewtonLeg():
-    dots = get_dots(math_func.g_2sin(1.0, 1.5)[0], 0.4, -2, 2, 20)
+    dots = get_dots(math_func.g_2sin(1.0, 1.5)[0], 0, -2, 2, 20)
     testNewtonAndDog(dots, math_func.g_2sin, np.array([2, 1]), adam_lr=0.002, polynomial_dim=6, polynomial_lr=0.00020)
 
-    dots = get_dots(math_func.g_exponent(1.5, 2)[0], 3, -2, 1.5, 20)
-    testNewtonAndDog(dots, math_func.g_exponent, np.array([1, 1]), adam_lr=0.005, polynomial_dim=7,
-                     polynomial_lr=0.0001)
+    # dots = get_dots(math_func.g_exponent(1.5, 2)[0], 0, -2, 1.5, 20)
+    # testNewtonAndDog(dots, math_func.g_exponent, np.array([1, 1]), adam_lr=0.005, polynomial_dim=7,
+    #                  polynomial_lr=0.0001)
 
-    dots = get_dots(math_func.g_2parabola(1.4, 4)[0], 2, -2, 2, 20)
-    testNewtonAndDog(dots, math_func.g_2parabola, np.array([1, 1]), adam_lr=0.5, polynomial_dim=3, polynomial_lr=0.0005)
+    # dots = get_dots(math_func.g_2parabola(1.4, 4)[0], 2, -2, 2, 20)
+    # testNewtonAndDog(dots, math_func.g_2parabola, np.array([1, 1]), adam_lr=0.5, polynomial_dim=3, polynomial_lr=0.0005)
 
 
 def addGDMinimisation(func, grad, start: np.ndarray, constant_lr):
@@ -126,7 +134,7 @@ def runTestBFGS():
 
 def main():
     runTestGaussNewtonLeg()
-    runTestBFGS()
+    # runTestBFGS()
 
 
 if __name__ == "__main__":
